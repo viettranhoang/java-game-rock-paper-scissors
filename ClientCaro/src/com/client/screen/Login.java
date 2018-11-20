@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package clientcaro;
+package com.client.screen;
 
+import com.client.screen.Register;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -16,14 +17,14 @@ import javax.swing.JOptionPane;
  *
  * @author ltphong
  */
-public class LoginCaro extends javax.swing.JFrame {
+public class Login extends javax.swing.JFrame {
 
     /**
      * Creates new form Login
      */
     DataInputStream inFromServer;
     DataOutputStream outToServer;
-    public LoginCaro(DataInputStream inFromServer, DataOutputStream outToServer) {
+    public Login(DataInputStream inFromServer, DataOutputStream outToServer) {
         setVisible(true);
        
         initComponents();
@@ -55,18 +56,18 @@ public class LoginCaro extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Login");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel2.setText("Username:");
         jLabel2.setToolTipText("");
         jLabel2.setName("l_username"); // NOI18N
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel3.setText("Password:");
         jLabel3.setName("l_password"); // NOI18N
 
         t_username.setName("t_username"); // NOI18N
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         jButton1.setText("Login");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -74,7 +75,7 @@ public class LoginCaro extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
+        jButton2.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         jButton2.setText("Register");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -82,7 +83,7 @@ public class LoginCaro extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
+        jButton3.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         jButton3.setText("Exit");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -159,7 +160,7 @@ public class LoginCaro extends javax.swing.JFrame {
                         if(loginrev.equals("1"))
                         {   
 //                            ClientCaro.listOnline.add(ss[1]);
-                            Loginsuccess loginsuccess = new Loginsuccess(inFromServer, outToServer,t_username.getText());
+                            LoginSuccess loginsuccess = new LoginSuccess(inFromServer, outToServer,t_username.getText());
 //                            Home home = new Home();
 //                            home.setVisible(true);
                             this.setVisible(false);
@@ -168,14 +169,14 @@ public class LoginCaro extends javax.swing.JFrame {
                         {
                             if(loginrev.equals("0"))
                             {
-                               Loginfail loginfail = new Loginfail(inFromServer, outToServer);
+                               LoginFail loginfail = new LoginFail(inFromServer, outToServer);
                                this.setVisible(false);
                             }
                            
                         }
                        // System.exit(1);
                 } catch (IOException ex) {
-                    Logger.getLogger(LoginCaro.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
 

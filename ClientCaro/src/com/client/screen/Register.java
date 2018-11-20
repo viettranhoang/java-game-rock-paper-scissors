@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package clientcaro;
+package com.client.screen;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -154,7 +154,7 @@ public class Register extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "You have register in successfully","Success",
                                     JOptionPane.INFORMATION_MESSAGE);
                 this.setVisible(false);
-                LoginCaro login = new LoginCaro(inFromServer, outToServer);
+                Login login = new Login(inFromServer, outToServer);
             }
             else
             {
@@ -171,7 +171,7 @@ public class Register extends javax.swing.JFrame {
 
     private void b_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_exitActionPerformed
         // TODO add your handling code here:
-        LoginCaro login = new LoginCaro(inFromServer, outToServer);
+        Login login = new Login(inFromServer, outToServer);
     }//GEN-LAST:event_b_exitActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

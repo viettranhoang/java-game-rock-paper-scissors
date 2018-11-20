@@ -98,6 +98,8 @@ public class CaroServer extends javax.swing.JFrame {
         myself.start();
         you.start();
         you.suspend();
+        
+        
         class Listen extends Thread {
 
             public Listen() {
@@ -183,6 +185,7 @@ public class CaroServer extends javax.swing.JFrame {
         sendButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         chatEditorPane = new javax.swing.JEditorPane();
+        btnBua = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         exitMenuItem = new javax.swing.JMenuItem();
@@ -192,14 +195,14 @@ public class CaroServer extends javax.swing.JFrame {
         setTitle("Caro Sever");
 
         boardPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        boardPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                boardPanelMouseClicked(evt);
-            }
-        });
         boardPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
                 boardPanelMouseMoved(evt);
+            }
+        });
+        boardPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                boardPanelMouseClicked(evt);
             }
         });
 
@@ -284,6 +287,13 @@ public class CaroServer extends javax.swing.JFrame {
         chatEditorPane.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
         jScrollPane1.setViewportView(chatEditorPane);
 
+        btnBua.setText("Bua");
+        btnBua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuaActionPerformed(evt);
+            }
+        });
+
         fileMenu.setText("File");
 
         exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.ALT_MASK));
@@ -312,15 +322,21 @@ public class CaroServer extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(myselfPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(youPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(typingTextField)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(sendButton))
-                    .addComponent(backButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(myselfPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(youPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(backButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnBua)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -339,7 +355,9 @@ public class CaroServer extends javax.swing.JFrame {
                             .addComponent(typingTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(sendButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                        .addComponent(backButton))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(backButton)
+                            .addComponent(btnBua)))
                     .addComponent(boardPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -449,6 +467,14 @@ public class CaroServer extends javax.swing.JFrame {
     private void typingTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typingTextFieldActionPerformed
         sendButtonActionPerformed(null);
     }//GEN-LAST:event_typingTextFieldActionPerformed
+
+    private void btnBuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuaActionPerformed
+        try {
+            outGame.write(5);
+            outGame.flush();
+            if(clientDanh != -1) pointCalculator(clientDanh, 0);
+        } catch (IOException ex) {}
+    }//GEN-LAST:event_btnBuaActionPerformed
     /**
      * Tìm xung quanh quân vừa đánh theo hàng ngang, doc, chéo ngang
      * chéo chính. Nếu đủ 5 quân và không bị chặn 2 đầu thì thắng
@@ -634,6 +660,16 @@ public class CaroServer extends javax.swing.JFrame {
         return false;
     }
 
+    public void pointCalculator(int p1, int p2) {
+        if((p1 + 1) % 3 == p2) {
+            System.out.println(p2 + "thua");
+        } else if(p1 == p2) {
+            System.out.println("Hòa");
+        } else {
+            System.out.println(p1 + "thắng");
+        }
+    }
+    
     public void listenSocket() {
 
         try {
@@ -681,6 +717,8 @@ public class CaroServer extends javax.swing.JFrame {
             try {
                 Point s = null;
                 try {
+                    clientDanh = inGame.read();
+                    System.out.println(clientDanh);
                     s = (Point) inGame.readObject();
                     checked.add(s);
                     currentPoint = s;
@@ -762,6 +800,7 @@ public void createTrayIcon(){
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
     private javax.swing.JPanel boardPanel;
+    private javax.swing.JButton btnBua;
     private javax.swing.JEditorPane chatEditorPane;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
@@ -807,4 +846,6 @@ public void createTrayIcon(){
     boolean startUser = true;// quân đen đi trước
     private Image img = new ImageIcon(this.getClass().getResource(
             "/images/im.png")).getImage();
+    
+    int clientDanh = -1;
 }

@@ -4,6 +4,7 @@
  */
 package clientcaro;
 
+import com.client.screen.Login;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -52,7 +53,7 @@ public static void main(String[] args) throws IOException {
 	
             
         //Login at server
-        LoginCaro logincaro = new LoginCaro(inFromServer, outToServer);
+        Login logincaro = new Login(inFromServer, outToServer);
 
 	}
 }

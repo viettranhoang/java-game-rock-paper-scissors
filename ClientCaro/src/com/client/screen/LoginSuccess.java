@@ -2,8 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package clientcaro;
+package com.client.screen;
 
+import clientcaro.CaroClient;
+import clientcaro.CaroServer;
+import clientcaro.address;
 import java.awt.event.ItemEvent;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -17,7 +20,7 @@ import javax.swing.JOptionPane;
  *
  * @author ltphong
  */
-public class Loginsuccess extends javax.swing.JFrame {
+public class LoginSuccess extends javax.swing.JFrame {
 
     /**
      * Creates new form Loginsuccess
@@ -26,7 +29,7 @@ public class Loginsuccess extends javax.swing.JFrame {
     DataOutputStream outToServer;
     String _name;
     address add;
-    public Loginsuccess(DataInputStream inFromServer, DataOutputStream outToServer, String _name) {
+    public LoginSuccess(DataInputStream inFromServer, DataOutputStream outToServer, String _name) {
         setVisible(true);
        
         initComponents();
@@ -179,7 +182,7 @@ public class Loginsuccess extends javax.swing.JFrame {
             setVisible(false);
             //System.exit(1);
         } catch (IOException ex) {
-            Logger.getLogger(Loginsuccess.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
         }     
     }//GEN-LAST:event_createServerActionPerformed
 
@@ -224,7 +227,7 @@ public class Loginsuccess extends javax.swing.JFrame {
                 
             }
         } catch (IOException ex) {
-            Logger.getLogger(Loginsuccess.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         
@@ -256,7 +259,7 @@ public class Loginsuccess extends javax.swing.JFrame {
                 //gui len server
                 outToServer.writeBytes(_choigame + "\n");
             } catch (IOException ex) {
-                Logger.getLogger(Loginsuccess.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         setVisible(false);

@@ -54,6 +54,8 @@ public class CaroClient extends javax.swing.JFrame {
         mySelf.start();
         you.start();
         mySelf.suspend();
+        
+        
         class Listen extends Thread {
 
             public Listen() {
@@ -156,6 +158,7 @@ public class CaroClient extends javax.swing.JFrame {
         pauseButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         chatEditorPane = new javax.swing.JEditorPane();
+        btnBao = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         exitMenuItem = new javax.swing.JMenuItem();
@@ -209,7 +212,7 @@ public class CaroClient extends javax.swing.JFrame {
             .addGroup(myselfPanelLayout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(jLabel_ban, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         myselfPanelLayout.setVerticalGroup(
             myselfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,6 +269,13 @@ public class CaroClient extends javax.swing.JFrame {
         chatEditorPane.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
         jScrollPane1.setViewportView(chatEditorPane);
 
+        btnBao.setText("Bao");
+        btnBao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBaoActionPerformed(evt);
+            }
+        });
+
         fileMenu.setText("File");
 
         exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.ALT_MASK));
@@ -305,7 +315,10 @@ public class CaroClient extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(backButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pauseButton)))
+                        .addComponent(pauseButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnBao)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -327,7 +340,8 @@ public class CaroClient extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(backButton)
-                            .addComponent(pauseButton))))
+                            .addComponent(pauseButton)
+                            .addComponent(btnBao))))
                 .addContainerGap())
         );
 
@@ -432,6 +446,14 @@ public class CaroClient extends javax.swing.JFrame {
     private void typingTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typingTextFieldActionPerformed
         sendButtonActionPerformed(null);
     }//GEN-LAST:event_typingTextFieldActionPerformed
+
+    private void btnBaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBaoActionPerformed
+        try {
+            outGame.write(3);
+            outGame.flush();
+            pointCalculator(serverDanh, 1);
+        } catch (IOException ex) {}
+    }//GEN-LAST:event_btnBaoActionPerformed
     /**
      * Tìm xung quanh quân vừa đánh theo hàng ngang, doc, chéo ngang
      * chéo chính. Nếu đủ 5 quân và không bị chặn 2 đầu thì thắng
@@ -616,6 +638,16 @@ public class CaroClient extends javax.swing.JFrame {
         return false;
     }
 
+    public void pointCalculator(int p1, int p2) {
+        if((p1 + 1) % 3 == p2) {
+            System.out.println("Play2 thua");
+        } else if(p1 == p2) {
+            System.out.println("Hòa");
+        } else {
+            System.out.println("Player 1 thắng");
+        }
+    }
+    
     public void listenSocket(Integer port1) {
         //Create socket connection
         try {
@@ -661,6 +693,8 @@ public class CaroClient extends javax.swing.JFrame {
             try {
                 Point s = null;
                 try {
+                    serverDanh = inGame.read();
+                    System.out.println(serverDanh);
                     s = (Point) inGame.readObject();
                     checked.add(s);
                     currentPoint = s;
@@ -699,6 +733,7 @@ public class CaroClient extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
     private javax.swing.JPanel boardPanel;
+    private javax.swing.JButton btnBao;
     private javax.swing.JEditorPane chatEditorPane;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
@@ -746,4 +781,5 @@ public class CaroClient extends javax.swing.JFrame {
      */
     boolean startUser = true;//quân đen đi trước
     String host;
+    int serverDanh = -1;
 }

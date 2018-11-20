@@ -60,17 +60,26 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jScrollPane1" max="32767" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="myselfPanel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="youPanel" min="-2" max="-2" attributes="0"/>
-                  </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="typingTextField" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="sendButton" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="backButton" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="myselfPanel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="youPanel" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="backButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="btnBua" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -94,7 +103,10 @@
                           <Component id="sendButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="23" max="32767" attributes="0"/>
-                      <Component id="backButton" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="backButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnBua" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <Component id="boardPanel" alignment="1" max="32767" attributes="0"/>
               </Group>
@@ -113,8 +125,8 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="boardPanelMouseClicked"/>
         <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="boardPanelMouseMoved"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="boardPanelMouseClicked"/>
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JPanel(){&#xa;    public void paintComponent(Graphics g){&#xa;        this.setOpaque(false);&#xa;        Graphics2D g2 = (Graphics2D) g;&#xa;        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);&#xa;        //V&#x1ebd; b&#xe0;n c&#x1edd;&#xa;        g.setColor(Color.GRAY);&#xa;        for(int r = 0;r&lt;=Size;r++){&#xa;            g.drawLine(X0, Y0+r*Width, X0+Size*Width, Y0+r*Width);&#xa;        }&#xa;        for(int c = 0;c&lt;=Size;c++){&#xa;            g.drawLine(X0+c*Width, Y0, X0+c*Width, Y0+Size*Width);&#xa;        }&#xa;&#xa;        //V&#x1ebd; &#xf4; c&#xf3; chu&#x1ed9;t qua&#xa;        if(!isPause)&#xa;        if(currentColumn&lt;Size&amp;&amp;currentColumn&gt;=0&amp;&amp;currentRow&lt;Size&amp;&amp;currentRow&gt;=0){&#xa;            g.setColor(new Color(0, 0, 0, 80));&#xa;            g2.fillOval(X0+currentColumn*Width+Width/6+1,Y0+ currentRow*Width+Width/6+1, 2*Width/3, 2*Width/3);&#xa;        }&#xa;        //V&#x1ebd; c&#xe1;c v&#x1ecb; tr&#xed; &#x111;&#xe3; &#x111;&#xe1;nh&#xa;        if(checked.size()==0) return;&#xa;        for(int p = 0;p&lt;checked.size();p++){&#xa;            if(startUser){&#xa;                if(p%2==0) g2.setColor(Color.BLACK);&#xa;                else g2.setColor(Color.GREEN);&#xa;            }else{&#xa;                if(p%2!=0) g2.setColor(Color.BLACK);&#xa;                else g2.setColor(Color.GREEN);&#xa;            }&#xa;            g2.fillOval(X0+checked.get(p).x*Width+Width/6+1,Y0+ checked.get(p).y*Width+Width/6+1, 2*Width/3, 2*Width/3);&#xa;            //g2.drawString(String.valueOf(p),X0+checked.get(p).x*Width+12,Y0+ checked.get(p).y*Width+20);&#xa;        }&#xa;        //&#x110;&#xe1;nh d&#x1ea5;u &#xf4; m&#x1edb;i &#x111;&#xe1;nh&#xa;        g.setColor(Color.RED);&#xa;        g.drawRect(checked.get(checked.size()-1).x*Width+X0, checked.get(checked.size()-1).y*Width+Y0, Width, Width);&#xa;        super.paintComponent(g);&#xa;    }&#xa;}&#xa;"/>
@@ -263,5 +275,13 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="btnBua">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Bua"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBuaActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>

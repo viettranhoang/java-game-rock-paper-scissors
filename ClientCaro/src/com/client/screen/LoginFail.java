@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package clientcaro;
+package com.client.screen;
 
+import com.client.screen.Register;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
@@ -11,12 +12,12 @@ import java.io.DataOutputStream;
  *
  * @author ltphong
  */
-public class Loginfail extends javax.swing.JFrame {
+public class LoginFail extends javax.swing.JFrame {
 
 
     DataInputStream inFromServer;
     DataOutputStream outToServer;
-    public Loginfail(DataInputStream inFromServer, DataOutputStream outToServer) {
+    public LoginFail(DataInputStream inFromServer, DataOutputStream outToServer) {
         setVisible(true);
         
         initComponents();
@@ -98,7 +99,7 @@ public class Loginfail extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         setVisible(false);
-        LoginCaro login = new LoginCaro(inFromServer, outToServer);
+        Login login = new Login(inFromServer, outToServer);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
