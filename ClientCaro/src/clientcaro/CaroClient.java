@@ -46,14 +46,7 @@ public class CaroClient extends javax.swing.JFrame {
         initComponents();
         setTitle(name+ " (Client)");
         setVisible(true);
-        jLabel_ban.setText("Bạn đánh.");
-        jLabel_doiphuong.setText("Đối phương đánh.");
         host = ip;
-        mySelf = new PlayNow(myselfPanel);
-        you = new PlayNow(youPanel);
-        mySelf.start();
-        you.start();
-        mySelf.suspend();
         
         
         class Listen extends Thread {
@@ -92,73 +85,19 @@ public class CaroClient extends javax.swing.JFrame {
     private void initComponents() {
 
         jTextField1 = new javax.swing.JTextField();
-        boardPanel = new javax.swing.JPanel(){
-            //        BufferedImage imageX ;
-            //        BufferedImage imageO ;
-            public void paintComponent(Graphics g){
-                //
-                //        try{
-                    //        imageX = ImageIO.read(getClass().getResourceAsStream("/x.png"));
-                    //
-                    //        imageO = ImageIO.read(getClass().getResourceAsStream("/o.png"));
-                    //        }catch (Exception e) {
-                    //			// TODO Auto-generated catch block
-                    //            e.getMessage();
-                    //        }
-
-                this.setOpaque(false);
-                Graphics2D g2 = (Graphics2D) g;
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                //Vẽ bàn cờ
-                g.setColor(Color.GRAY);
-                for(int r = 0;r<=Size;r++){
-                    g.drawLine(X0, Y0+r*Width, X0+Size*Width, Y0+r*Width);
-                }
-                for(int c = 0;c<=Size;c++){
-                    g.drawLine(X0+c*Width, Y0, X0+c*Width, Y0+Size*Width);
-                }
-
-                //Vẽ ô có chuột qua
-                if(!isPause)
-                if(currentColumn<Size&&currentColumn>=0&&currentRow<Size&&currentRow>=0){
-                    g.setColor(new Color(255, 204, 204, 150));
-                    g2.fillOval(X0+currentColumn*Width+Width/6+1,Y0+ currentRow*Width+Width/6+1, 2*Width/3, 2*Width/3);
-                }
-                //Vẽ các vị trí đã đánh
-                if(checked.size()==0) return;
-                for(int p = 0;p<checked.size();p++){
-                    if(startUser){
-                        if(p%2==0) {
-                            g2.setColor(Color.BLACK);
-                            //                            g2.drawString("X", checked.get(checked.size()-1).x*Width+X0, checked.get(checked.size()-1).y*Width+Y0);
-                        }
-                        else g2.setColor(Color.GREEN);
-                    }else{
-                        if(p%2!=0) g2.setColor(Color.BLACK);
-                        else g2.setColor(Color.GREEN);
-                    }
-                    g2.fillOval(X0+checked.get(p).x*Width+Width/6+1,Y0+ checked.get(p).y*Width+Width/6+1, 2*Width/3, 2*Width/3);
-                    //g2.drawString(String.valueOf(p),X0+checked.get(p).x*Width+12,Y0+ checked.get(p).y*Width+20);
-                }
-                //Đánh dấu ô mới đánh
-                g.setColor(Color.RED);
-
-                g.drawRect(checked.get(checked.size()-1).x*Width+X0, checked.get(checked.size()-1).y*Width+Y0, Width, Width);
-                super.paintComponent(g);
-            }
-        }
-        ;
-        backButton = new javax.swing.JButton();
-        myselfPanel = new javax.swing.JPanel();
-        jLabel_ban = new javax.swing.JLabel();
-        youPanel = new javax.swing.JPanel();
-        jLabel_doiphuong = new javax.swing.JLabel();
+        buttonGroup1 = new javax.swing.ButtonGroup();
         typingTextField = new javax.swing.JTextField();
         sendButton = new javax.swing.JButton();
-        pauseButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         chatEditorPane = new javax.swing.JEditorPane();
-        btnBao = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        rbBua = new javax.swing.JRadioButton();
+        rbKeo = new javax.swing.JRadioButton();
+        rbBao = new javax.swing.JRadioButton();
+        btnSend = new javax.swing.JButton();
+        lbScorePlayer = new javax.swing.JLabel();
+        lbScoreYou = new javax.swing.JLabel();
+        lbTime = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         exitMenuItem = new javax.swing.JMenuItem();
@@ -168,82 +107,6 @@ public class CaroClient extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Caro");
-
-        boardPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        boardPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                boardPanelMouseMoved(evt);
-            }
-        });
-        boardPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                boardPanelMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout boardPanelLayout = new javax.swing.GroupLayout(boardPanel);
-        boardPanel.setLayout(boardPanelLayout);
-        boardPanelLayout.setHorizontalGroup(
-            boardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 533, Short.MAX_VALUE)
-        );
-        boardPanelLayout.setVerticalGroup(
-            boardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 520, Short.MAX_VALUE)
-        );
-
-        backButton.setText("Xin đi lại");
-        backButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backButtonActionPerformed(evt);
-            }
-        });
-
-        myselfPanel.setBackground(new java.awt.Color(153, 255, 153));
-        myselfPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        myselfPanel.setPreferredSize(new java.awt.Dimension(150, 150));
-
-        jLabel_ban.setFont(new java.awt.Font("Tahoma", 3, 14)); // NOI18N
-
-        javax.swing.GroupLayout myselfPanelLayout = new javax.swing.GroupLayout(myselfPanel);
-        myselfPanel.setLayout(myselfPanelLayout);
-        myselfPanelLayout.setHorizontalGroup(
-            myselfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(myselfPanelLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jLabel_ban, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
-        );
-        myselfPanelLayout.setVerticalGroup(
-            myselfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(myselfPanelLayout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(jLabel_ban, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
-        );
-
-        youPanel.setBackground(new java.awt.Color(255, 255, 153));
-        youPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        youPanel.setPreferredSize(new java.awt.Dimension(150, 150));
-
-        jLabel_doiphuong.setFont(new java.awt.Font("Tahoma", 3, 14)); // NOI18N
-
-        javax.swing.GroupLayout youPanelLayout = new javax.swing.GroupLayout(youPanel);
-        youPanel.setLayout(youPanelLayout);
-        youPanelLayout.setHorizontalGroup(
-            youPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(youPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel_doiphuong, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        youPanelLayout.setVerticalGroup(
-            youPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(youPanelLayout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(jLabel_doiphuong, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
-        );
 
         typingTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -258,23 +121,75 @@ public class CaroClient extends javax.swing.JFrame {
             }
         });
 
-        pauseButton.setText("Tạm dừng");
-        pauseButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pauseButtonActionPerformed(evt);
-            }
-        });
-
+        chatEditorPane.setEditable(false);
         chatEditorPane.setBackground(new java.awt.Color(204, 255, 255));
-        chatEditorPane.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
+        chatEditorPane.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         jScrollPane1.setViewportView(chatEditorPane);
 
-        btnBao.setText("Bao");
-        btnBao.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup1.add(rbBua);
+        rbBua.setSelected(true);
+        rbBua.setText("Bua");
+
+        buttonGroup1.add(rbKeo);
+        rbKeo.setText("Keo");
+
+        buttonGroup1.add(rbBao);
+        rbBao.setText("Bao");
+
+        btnSend.setText("Gửi");
+        btnSend.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBaoActionPerformed(evt);
+                btnSendActionPerformed(evt);
             }
         });
+
+        lbScorePlayer.setText("Player:");
+
+        lbScoreYou.setText("You:");
+
+        lbTime.setText("Thời gian");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(rbBua)
+                        .addGap(48, 48, 48)
+                        .addComponent(rbKeo))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lbTime)
+                        .addComponent(btnSend)))
+                .addGap(42, 42, 42)
+                .addComponent(rbBao)
+                .addContainerGap(27, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbScoreYou)
+                    .addComponent(lbScorePlayer))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(lbTime)
+                .addGap(51, 51, 51)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rbBua)
+                    .addComponent(rbKeo)
+                    .addComponent(rbBao))
+                .addGap(51, 51, 51)
+                .addComponent(btnSend)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbScoreYou)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbScorePlayer)
+                .addContainerGap())
+        );
 
         fileMenu.setText("File");
 
@@ -298,130 +213,40 @@ public class CaroClient extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(boardPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(myselfPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(youPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(typingTextField)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(sendButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(backButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pauseButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnBao)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(sendButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(boardPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(youPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(myselfPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(typingTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(sendButton))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(backButton)
-                            .addComponent(pauseButton)
-                            .addComponent(btnBao))))
+                            .addComponent(sendButton)
+                            .addComponent(typingTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 5, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void boardPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_boardPanelMouseClicked
-        if (isPause) {
-            return;
-        }
-        Point p = new Point();
-        //Kiểm tra vị trí có thuộc bàn cờ không?
-        if ((currentColumn < Size && currentColumn >= 0 && currentRow < Size && currentRow >= 0)) {
-            p = new Point(currentColumn, currentRow);
-        } else {
-            return;
-        }
-        if (!checked.contains(p)) {
-            checked.add(p);
-            currentPoint = new Point(p);
-            currentColumn = -1;
-            currentRow = -1;
-            boardPanel.repaint();
-            try {
-                outGame.writeObject(currentPoint);//truyền thông tin
-            } catch (IOException ex) {
-                //Logger.getLogger(CaroServer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if (isWin(false)) {
-                JOptionPane.showMessageDialog(this, "Bạn đã thắng");
-                startUser = true;
-                checked.removeAllElements();
-            }
-            user = true;//tới quân đen
-            you.resume();
-            mySelf.suspend();
-            myselfPanel.setBorder(new LineBorder(Color.BLACK));
-        }
-        isPause = true;
-    }//GEN-LAST:event_boardPanelMouseClicked
-
-    private void boardPanelMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_boardPanelMouseMoved
-        int CX = evt.getX();
-        int CY = evt.getY();
-        if (CY - Y0 < 0) {
-            currentColumn = (CX - X0) / Width;
-            currentRow = -1 + (CY - Y0) / Width;
-            return;
-        }
-        if (CX - X0 < 0) {
-            currentColumn = -1 + (CX - X0) / Width;
-            currentRow = (CY - Y0) / Width;
-            return;
-        }
-        currentColumn = (CX - X0) / Width;
-        currentRow = (CY - Y0) / Width;
-        Point p = new Point(currentColumn, currentRow);
-        if (checked.contains(p)) {
-            currentColumn = -1;
-            currentRow = -1;
-
-        }
-        boardPanel.repaint();
-        boardPanel.validate();
-    }//GEN-LAST:event_boardPanelMouseMoved
-
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         this.dispose();
     }//GEN-LAST:event_exitMenuItemActionPerformed
-
-    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        if (checked.size() == 0) {
-            return;
-        }
-        if (JOptionPane.showConfirmDialog(this, "Bạn muốn xin đi lại", "Thông báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-            user = !user;
-            checked.remove(checked.size() - 1);
-            boardPanel.repaint();
-        }
-    }//GEN-LAST:event_backButtonActionPerformed
 
     private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
         String s = typingTextField.getText();
@@ -439,212 +264,37 @@ public class CaroClient extends javax.swing.JFrame {
         typingTextField.setText("");
     }//GEN-LAST:event_sendButtonActionPerformed
 
-    private void pauseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseButtonActionPerformed
-        isPause = !isPause;
-    }//GEN-LAST:event_pauseButtonActionPerformed
-
     private void typingTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typingTextFieldActionPerformed
         sendButtonActionPerformed(null);
     }//GEN-LAST:event_typingTextFieldActionPerformed
 
-    private void btnBaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBaoActionPerformed
+    private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         try {
-            outGame.write(3);
-            outGame.flush();
-            pointCalculator(serverDanh, 1);
+            if(rbBua.isSelected()) {
+                outGame.write(0);
+                outGame.flush();
+                clientDanh = 0;
+            } else if(rbKeo.isSelected()) {
+                outGame.write(2);
+                outGame.flush();
+                clientDanh = 2;
+            } else {
+                outGame.write(1);
+                outGame.flush();
+                clientDanh = 1;
+            }
+            
+            if (clientDanh != -1) pointCalculator(clientDanh, serverDanh);
         } catch (IOException ex) {}
-    }//GEN-LAST:event_btnBaoActionPerformed
-    /**
-     * Tìm xung quanh quân vừa đánh theo hàng ngang, doc, chéo ngang
-     * chéo chính. Nếu đủ 5 quân và không bị chặn 2 đầu thì thắng
-     * @param user
-     * @return
-     */
-    public boolean isWin(boolean user) {
-        int n = 6;
-        /**
-         * Kiểm tra số quân xung quanh quân mới đánh nếu = 4
-         * và không bị chặn 2 đầu thì thắng
-         */
-        int ok = 0;
-        /**
-         * kiểm tra có bị chặn 2 đầu không
-         */
-        int soDauBiChan = 0;
-        int u;// u=0 nếu là user 1; u=1 nếu là user 2
-        if (startUser) {
-            if (user) {
-                u = 0;
-            } else {
-                u = 1;
-            }
-        } else {
-            if (user) {
-                u = 1;
-            } else {
-                u = 0;
-            }
-        }
-        //Kiểm tra hàng ngang
-        for (int i = 1; i < n; i++) {
-            Point p = new Point(currentPoint.x + i, currentPoint.y);
-            if (!(p.x < Size)) {
-                break;
-            }
-            if (checked.contains(p) && checked.indexOf(p) % 2 == u) {
-                ok++;
-            }
-            if ((checked.contains(p) && checked.indexOf(p) % 2 != u) || !checked.contains(p)) {
-                if (checked.contains(p) && checked.indexOf(p) % 2 != u) {
-                    soDauBiChan++;
-                }
-                //Gặp quân của đối thủ hoặc gặp ô trống
-                break;
-            }
-        }
-        for (int i = 1; i < n; i++) {
-            Point p = new Point(currentPoint.x - i, currentPoint.y);
-            if (!(p.x >= 0)) {
-                break;
-            }
-            if (checked.contains(p) && checked.indexOf(p) % 2 == u) {
-                ok++;
-            }
-            if ((checked.contains(p) && checked.indexOf(p) % 2 != u) || !checked.contains(p)) {
-                if (checked.contains(p) && checked.indexOf(p) % 2 != u) {
-                    soDauBiChan++;
-                }
-                //Gặp quân của đối thủ hoặc gặp ô trống
-                break;
-            }
-        }
-        if (ok == 4 && soDauBiChan != 2) {
-            return true;
-        }
-        //Kiểm tra hàng dọc
-        ok = 0;
-        soDauBiChan = 0;
-        for (int i = 1; i < n; i++) {
-            Point p = new Point(currentPoint.x, currentPoint.y + i);
-            if (!(p.y < Size)) {
-                break;
-            }
-            if (checked.contains(p) && checked.indexOf(p) % 2 == u) {
-                ok++;
-            }
-            if ((checked.contains(p) && checked.indexOf(p) % 2 != u) || !checked.contains(p)) {
-                if (checked.contains(p) && checked.indexOf(p) % 2 != u) {
-                    soDauBiChan++;
-                }
-                //Gặp quân của đối thủ hoặc gặp ô trống
-                break;
-            }
-        }
-        for (int i = 1; i < n; i++) {
-            Point p = new Point(currentPoint.x, currentPoint.y - i);
-            if (!(p.y >= 0)) {
-                break;
-            }
-            if (checked.contains(p) && checked.indexOf(p) % 2 == u) {
-                ok++;
-            }
-            if ((checked.contains(p) && checked.indexOf(p) % 2 != u) || !checked.contains(p)) {
-                if (checked.contains(p) && checked.indexOf(p) % 2 != u) {
-                    soDauBiChan++;
-                }
-                //Gặp quân của đối thủ hoặc gặp ô trống
-                break;
-            }
-        }
-        if (ok == 4 && soDauBiChan != 2) {
-            return true;
-        }
-        //Kiểm tra đường chéo chính
-        ok = 0;
-        soDauBiChan = 0;
-        for (int i = 1; i < n; i++) {
-            Point p = new Point(currentPoint.x + i, currentPoint.y + i);
-            if (!(p.x >= 0 && p.x < Size && p.y >= 0 && p.y < Size)) {//ô kiểm tra ra ngoài bàn cờ
-                break;
-            }
-            if (checked.contains(p) && checked.indexOf(p) % 2 == u) {
-                ok++;
-            }
-            if ((checked.contains(p) && checked.indexOf(p) % 2 != u) || !checked.contains(p)) {
-                if (checked.contains(p) && checked.indexOf(p) % 2 != u) {
-                    soDauBiChan++;
-                }
-                //Gặp quân của đối thủ hoặc gặp ô trống
-                break;
-            }
-        }
-        for (int i = 1; i < n; i++) {
-            Point p = new Point(currentPoint.x - i, currentPoint.y - i);
-            if (!(p.x >= 0 && p.x < Size && p.y >= 0 && p.y < Size)) {//ô kiểm tra ra ngoài bàn cờ
-                break;
-            }
-            if (checked.contains(p) && checked.indexOf(p) % 2 == u) {
-                ok++;
-            }
-            if ((checked.contains(p) && checked.indexOf(p) % 2 != u) || !checked.contains(p)) {
-                if (checked.contains(p) && checked.indexOf(p) % 2 != u) {
-                    soDauBiChan++;
-                }
-                //Gặp quân của đối thủ hoặc gặp ô trống
-                break;
-            }
-        }
-        if (ok == 4 && soDauBiChan != 2) {
-            return true;
-        }
-        //Kiểm tra đường chéo phụ
-        ok = 0;
-        soDauBiChan = 0;
-        for (int i = 1; i < n; i++) {
-            Point p = new Point(currentPoint.x + i, currentPoint.y - i);
-            if (!(p.x >= 0 && p.x < Size && p.y >= 0 && p.y < Size)) {//ô kiểm tra ra ngoài bàn cờ
-                break;
-            }
-            if (checked.contains(p) && checked.indexOf(p) % 2 == u) {
-                ok++;
-            }
-            if ((checked.contains(p) && checked.indexOf(p) % 2 != u) || !checked.contains(p)) {
-                if (checked.contains(p) && checked.indexOf(p) % 2 != u) {
-                    soDauBiChan++;
-                }
-                //Gặp quân của đối thủ hoặc gặp ô trống
-                break;
-            }
-        }
-        for (int i = 1; i < n; i++) {
-            Point p = new Point(currentPoint.x - i, currentPoint.y + i);
-            if (!(p.x >= 0 && p.x < Size && p.y >= 0 && p.y < Size)) {//ô kiểm tra ra ngoài bàn cờ
-                break;
-            }
-            if (checked.contains(p) && checked.indexOf(p) % 2 == u) {
-                ok++;
-            }
-            if ((checked.contains(p) && checked.indexOf(p) % 2 != u) || !checked.contains(p)) {
-                if (checked.contains(p) && checked.indexOf(p) % 2 != u) {
-                    soDauBiChan++;
-                }
-                //Gặp quân của đối thủ hoặc gặp ô trống
-                break;
-            }
-        }
-        if (ok == 4 && soDauBiChan != 2) {
-            return true;
-        }
-        return false;
-    }
-
+    }//GEN-LAST:event_btnSendActionPerformed
+   
     public void pointCalculator(int p1, int p2) {
         if((p1 + 1) % 3 == p2) {
-            System.out.println("Play2 thua");
+            System.out.println(p2 + "thua");
         } else if(p1 == p2) {
             System.out.println("Hòa");
         } else {
-            System.out.println("Player 1 thắng");
+            System.out.println(p1 + "thắng");
         }
     }
     
@@ -694,7 +344,8 @@ public class CaroClient extends javax.swing.JFrame {
                 Point s = null;
                 try {
                     serverDanh = inGame.read();
-                    System.out.println(serverDanh);
+                    System.out.println("server danh " + serverDanh);
+                    
                     s = (Point) inGame.readObject();
                     checked.add(s);
                     currentPoint = s;
@@ -702,52 +353,38 @@ public class CaroClient extends javax.swing.JFrame {
                     //Logger.getLogger(CaroServer.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 this.toFront();
-                boardPanel.repaint();
-                if (isWin(true)) {//quân đen thắng
-                    JOptionPane.showMessageDialog(this, "Bạn đã thua");
-                    startUser = false;
-                    checked.removeAllElements();
-                    boardPanel.repaint();
-                }
+//                if (isWin(true)) {//quân đen thắng
+//                    JOptionPane.showMessageDialog(this, "Bạn đã thua");
+//                    startUser = false;
+//                    checked.removeAllElements();
+//                }
                 user = false;//quân đỏ
                 isPause = false;
-                mySelf.resume();
-                you.suspend();
-                youPanel.setBorder(new LineBorder(Color.BLACK));
             } catch (IOException ex) {
             }
         }
     }
 
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//
-//            public void run() {
-//                new CaroClient(ip, port1, port2).setVisible(true);
-//            }
-//        });
-//    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton backButton;
-    private javax.swing.JPanel boardPanel;
-    private javax.swing.JButton btnBao;
+    private javax.swing.JButton btnSend;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JEditorPane chatEditorPane;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
-    private javax.swing.JLabel jLabel_ban;
-    private javax.swing.JLabel jLabel_doiphuong;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lbScorePlayer;
+    private javax.swing.JLabel lbScoreYou;
+    private javax.swing.JLabel lbTime;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JPanel myselfPanel;
-    private javax.swing.JButton pauseButton;
+    private javax.swing.JRadioButton rbBao;
+    private javax.swing.JRadioButton rbBua;
+    private javax.swing.JRadioButton rbKeo;
     private javax.swing.JButton sendButton;
     private javax.swing.JTextField typingTextField;
-    private javax.swing.JPanel youPanel;
     // End of variables declaration//GEN-END:variables
     private int X0 = 20;
     private int Y0 = 20;
@@ -781,5 +418,8 @@ public class CaroClient extends javax.swing.JFrame {
      */
     boolean startUser = true;//quân đen đi trước
     String host;
+     int clientDanh = -1;
     int serverDanh = -1;
+    int clientScore = 0;
+    int serverScore = 0;
 }
