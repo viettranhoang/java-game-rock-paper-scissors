@@ -24,6 +24,8 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -62,6 +64,9 @@ public class CaroClient extends javax.swing.JFrame {
             }
         }
         new ListenGame();
+        timer = new Timer();
+
+        initTimer();
     }
 
     /** This method is called from within the constructor to
@@ -84,6 +89,8 @@ public class CaroClient extends javax.swing.JFrame {
         lbScoreYou = new javax.swing.JLabel();
         lbTime = new javax.swing.JLabel();
         lbWin = new javax.swing.JLabel();
+        lbChoose1 = new javax.swing.JLabel();
+        lbChoose = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         exitMenuItem = new javax.swing.JMenuItem();
@@ -117,33 +124,43 @@ public class CaroClient extends javax.swing.JFrame {
 
         lbTime.setText("Thời gian");
 
+        lbWin.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        lbChoose1.setText("Bạn chọn ");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbScoreYou)
-                    .addComponent(lbScorePlayer))
-                .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(lbScorePlayer)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lbScoreYou)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(lbTime)
+                        .addGap(6, 6, 6)
+                        .addComponent(rbBua)
+                        .addGap(48, 48, 48)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnSend)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(rbBua)
-                                .addGap(48, 48, 48)
-                                .addComponent(rbKeo))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lbTime)
-                                .addComponent(btnSend)))
-                        .addGap(42, 42, 42)
-                        .addComponent(rbBao))
+                                .addComponent(rbKeo)
+                                .addGap(42, 42, 42)
+                                .addComponent(rbBao))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(104, 104, 104)
-                        .addComponent(lbWin)))
-                .addContainerGap(45, Short.MAX_VALUE))
+                        .addGap(124, 124, 124)
+                        .addComponent(lbChoose1)))
+                .addContainerGap(73, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(115, 115, 115)
+                .addComponent(lbWin, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,16 +172,20 @@ public class CaroClient extends javax.swing.JFrame {
                     .addComponent(rbBua)
                     .addComponent(rbKeo)
                     .addComponent(rbBao))
-                .addGap(51, 51, 51)
-                .addComponent(btnSend)
                 .addGap(18, 18, 18)
-                .addComponent(lbWin)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
+                .addComponent(lbChoose1)
+                .addGap(29, 29, 29)
+                .addComponent(btnSend)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addComponent(lbWin, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
                 .addComponent(lbScoreYou)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbScorePlayer)
                 .addContainerGap())
         );
+
+        lbChoose.setText("Bạn chọn ");
 
         fileMenu.setText("File");
 
@@ -189,9 +210,13 @@ public class CaroClient extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(121, 121, 121)
+                    .addComponent(lbChoose)
+                    .addContainerGap(193, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,6 +224,11 @@ public class CaroClient extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(162, 162, 162)
+                    .addComponent(lbChoose)
+                    .addContainerGap(162, Short.MAX_VALUE)))
         );
 
         pack();
@@ -209,22 +239,30 @@ public class CaroClient extends javax.swing.JFrame {
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
+        timer.cancel();
+        btnSend.setEnabled(false);
         try {
-            if(rbBua.isSelected()) {
+            if (rbBua.isSelected()) {
+                lbChoose.setText("Bạn chọn búa");
                 outGame.write(0);
                 outGame.flush();
                 youDanh = 0;
-            } else if(rbKeo.isSelected()) {
+            } else if (rbKeo.isSelected()) {
+                lbChoose.setText("Bạn chọn kéo");
                 outGame.write(2);
                 outGame.flush();
                 youDanh = 2;
             } else {
+                lbChoose.setText("Bạn chọn bao");
                 outGame.write(1);
                 outGame.flush();
                 youDanh = 1;
             }
             
-            if (youDanh != -1) pointCalculator(youDanh, playerDanh);
+            if (youDanh != -1) {
+                pointCalculator(youDanh, playerDanh);
+                initTimer();
+            }
         } catch (IOException ex) {}
     }//GEN-LAST:event_btnSendActionPerformed
    
@@ -242,6 +280,35 @@ public class CaroClient extends javax.swing.JFrame {
         }
         lbScoreYou.setText("You: " + yourScore);
         lbScorePlayer.setText("Player: " + playerScore);
+    }
+    
+    
+    public void initTimer() {
+        btnSend.setEnabled(true);
+
+        timer = new Timer();
+        TimerTask task = new TimerTask() {
+            private int i = 30;
+
+            public void run() {
+                if (i >= 0) {
+                    lbTime.setText("Thời gian: " + i--);
+                }
+                if (i == 0) {
+                    lbChoose.setText("Bạn chọn búa");
+                    try {
+                        outGame.write(0);
+                        outGame.flush();
+                    } catch (Exception e) {
+                    }
+                    youDanh = 0;
+                    btnSend.setEnabled(false);
+                    timer.cancel();
+                }
+            }
+        };
+        timer.scheduleAtFixedRate(task, 0, 1000); //1000
+
     }
     
         public void listenSocketGame(Integer port2) {
@@ -292,6 +359,8 @@ public class CaroClient extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lbChoose;
+    private javax.swing.JLabel lbChoose1;
     private javax.swing.JLabel lbScorePlayer;
     private javax.swing.JLabel lbScoreYou;
     private javax.swing.JLabel lbTime;
@@ -333,4 +402,6 @@ public class CaroClient extends javax.swing.JFrame {
     int playerDanh = -1;
     float playerScore = 0;
     float yourScore = 0;
+    
+    Timer timer;
 }
