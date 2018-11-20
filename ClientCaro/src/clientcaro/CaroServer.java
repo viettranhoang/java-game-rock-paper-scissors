@@ -33,6 +33,8 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -93,18 +95,6 @@ public class CaroServer extends javax.swing.JFrame {
         port_server1 = _portserver1; // Port dung tao server de choi game
         port_server2 = _portserver2; // Port dung de chat khi choi game
         
-        class Listen extends Thread {
-
-            public Listen() {
-                start();
-            }
-
-            @Override
-            public void run() {
-                listenSocket();
-            }
-        }
-        new Listen();
         class ListenGame extends Thread {
 
             public ListenGame() {
@@ -118,6 +108,7 @@ public class CaroServer extends javax.swing.JFrame {
         }
         new ListenGame();
         createTrayIcon();
+//        initTimer();
     }
 
   
@@ -131,10 +122,6 @@ public class CaroServer extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        typingTextField = new javax.swing.JTextField();
-        sendButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        chatEditorPane = new javax.swing.JEditorPane();
         jPanel1 = new javax.swing.JPanel();
         rbBua = new javax.swing.JRadioButton();
         rbKeo = new javax.swing.JRadioButton();
@@ -143,6 +130,7 @@ public class CaroServer extends javax.swing.JFrame {
         lbTime = new javax.swing.JLabel();
         lbScoreYou = new javax.swing.JLabel();
         lbScorePlayer = new javax.swing.JLabel();
+        lbWin = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         exitMenuItem = new javax.swing.JMenuItem();
@@ -152,24 +140,6 @@ public class CaroServer extends javax.swing.JFrame {
         setTitle("Caro Sever");
         setPreferredSize(new java.awt.Dimension(400, 400));
         setSize(new java.awt.Dimension(500, 500));
-
-        typingTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                typingTextFieldActionPerformed(evt);
-            }
-        });
-
-        sendButton.setText("Gửi");
-        sendButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sendButtonActionPerformed(evt);
-            }
-        });
-
-        chatEditorPane.setEditable(false);
-        chatEditorPane.setBackground(new java.awt.Color(204, 255, 255));
-        chatEditorPane.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        jScrollPane1.setViewportView(chatEditorPane);
 
         buttonGroup1.add(rbBua);
         rbBua.setSelected(true);
@@ -208,14 +178,16 @@ public class CaroServer extends javax.swing.JFrame {
                         .addComponent(lbScorePlayer)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 57, Short.MAX_VALUE)
+                .addGap(0, 33, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lbTime)
-                    .addComponent(btnSend)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(rbBua)
                         .addGap(48, 48, 48)
-                        .addComponent(rbKeo)))
+                        .addComponent(rbKeo))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lbWin)
+                        .addComponent(btnSend)))
                 .addGap(42, 42, 42)
                 .addComponent(rbBao)
                 .addGap(54, 54, 54))
@@ -225,14 +197,16 @@ public class CaroServer extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(lbTime)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rbBua)
                     .addComponent(rbKeo)
                     .addComponent(rbBao))
                 .addGap(51, 51, 51)
                 .addComponent(btnSend)
-                .addGap(89, 89, 89)
+                .addGap(29, 29, 29)
+                .addComponent(lbWin)
+                .addGap(46, 46, 46)
                 .addComponent(lbScoreYou)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbScorePlayer)
@@ -266,27 +240,13 @@ public class CaroServer extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(typingTextField)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(sendButton))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(typingTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(sendButton)))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -297,88 +257,61 @@ public class CaroServer extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
-    private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
-        try {
-            String s = typingTextField.getText();
-            if (s.length() == 0) {
-                return;
-            }
-            Vector d = new Vector();
-            d.add(s);
-            out.writeObject(d);
-            chatEditorPane.setText(chatEditorPane.getText() + "me : " + s + "\n");
-            
-            typingTextField.setText("");
-        } catch (IOException ex) {
-            Logger.getLogger(CaroServer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_sendButtonActionPerformed
-
-    private void typingTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typingTextFieldActionPerformed
-        sendButtonActionPerformed(null);
-    }//GEN-LAST:event_typingTextFieldActionPerformed
-
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
      try {
         if(rbBua.isSelected()) {
             outGame.write(0);
             outGame.flush();
-            serverDanh = 0;
+            youDanh = 0;
         } else if(rbKeo.isSelected()) {
             outGame.write(2);
             outGame.flush();
-            serverDanh = 2;
+            youDanh = 2;
         } else {
             outGame.write(1);
             outGame.flush();
-            serverDanh = 1;
+            youDanh = 1;
         }
          
-        
-//            if(clientDanh != -1) pointCalculator(clientDanh, 0);
         } catch (IOException ex) {}
     }//GEN-LAST:event_btnSendActionPerformed
 
    
 
-    public void pointCalculator(int p1, int p2) {
-        if((p1 + 1) % 3 == p2) {
-            System.out.println(p2 + "thua");
-        } else if(p1 == p2) {
-            System.out.println("Hòa");
+    public void pointCalculator(int you, int player) {
+        if((you + 1) % 3 == player) {
+            playerScore += 1;
+            lbWin.setText("Bạn thua");
+            
+        } else if(you == player) {
+            playerScore += 0.5;
+            yourScore += 0.5;
+            lbWin.setText("Hòa");
+            
         } else {
-            System.out.println(p1 + "thắng");
+            yourScore += 1;
+            lbWin.setText("Bạn thắng");
         }
+        
+        lbScoreYou.setText("You: " + yourScore);
+        lbScorePlayer.setText("Player: " + playerScore);
     }
     
-    public void listenSocket() {
+    
+    public void initTimer() {
+        Timer timer = new Timer();
 
-        try {
-            server = new ServerSocket(port_server1);
-            Socket socket = server.accept();
-            OutputStream o = socket.getOutputStream();
-            out = new ObjectOutputStream(o);
-            InputStream i = socket.getInputStream();
-            in = new ObjectInputStream(i);
-        } catch (IOException e) {
-            System.out.println("Could not listen on port 4444");
-            System.exit(-1);
-        }
-
-        while (true) {
-            try {
-                Vector s = null;
-                try {
-                    s = (Vector) in.readObject();
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(CaroServer.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                this.toFront();
-                chatEditorPane.setText(chatEditorPane.getText() + "you : " + s.get(0).toString() + "\n");
-            } catch (IOException ex) {
+    TimerTask task = new TimerTask(){
+        private int i = 0;
+        public void run(){
+            if (i <= 30) {
+                lbTime.setText("Thời gian: " + i++);
             }
         }
+    };
+    timer.scheduleAtFixedRate(task, 0, 1000); //1000
     }
+
 
     public void listenSocketGamne() {
 
@@ -398,9 +331,9 @@ public class CaroServer extends javax.swing.JFrame {
             try {
                 Point s = null;
                 try {
-                    clientDanh = inGame.read();
-                    System.out.println("client danh " + clientDanh);
-                    pointCalculator(clientDanh, serverDanh);
+                    playerDanh = inGame.read();
+                    System.out.println("client danh " + playerDanh);
+                    pointCalculator(youDanh, playerDanh);
                 } catch (Exception ex) {
                     Logger.getLogger(CaroServer.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -464,21 +397,18 @@ public void createTrayIcon(){
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSend;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JEditorPane chatEditorPane;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbScorePlayer;
     private javax.swing.JLabel lbScoreYou;
     private javax.swing.JLabel lbTime;
+    private javax.swing.JLabel lbWin;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JRadioButton rbBao;
     private javax.swing.JRadioButton rbBua;
     private javax.swing.JRadioButton rbKeo;
-    private javax.swing.JButton sendButton;
-    private javax.swing.JTextField typingTextField;
     // End of variables declaration//GEN-END:variables
     private int X0 = 20;
     private int Y0 = 20;
@@ -497,12 +427,11 @@ public void createTrayIcon(){
      * Vị trí lẻ lưu các điểm đã đánh của user 2
      */
     private Vector<Point> checked = new Vector<Point>();
-    ServerSocket server = null;
+    
     Socket client = null;
     ServerSocket serverGame = null;
     Socket clientGame = null;
-    ObjectInputStream in = null;
-    ObjectOutputStream out = null;
+    
     ObjectInputStream inGame = null;
     ObjectOutputStream outGame = null;
     String line;
@@ -511,10 +440,10 @@ public void createTrayIcon(){
     private Image img = new ImageIcon(this.getClass().getResource(
             "/images/im.png")).getImage();
     
-    int clientDanh = -1;
-    int serverDanh = -1;
-    int clientScore = 0;
-    int serverScore = 0;
+    int playerDanh = -1;
+    int youDanh = -1;
+    float playerScore = 0;
+    float yourScore = 0;
 
     
 }

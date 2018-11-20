@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 import BEAN.User;
 import DBController.DBConnection;
@@ -57,7 +60,7 @@ public class UserDAO {
 	public static void creatUser(User user) {
 		Connection conn= null;
 		PreparedStatement ptmt= null;
-		String sql="insert into user value(?,?,?,?,?,?)";
+		String sql="insert into user value(?,?,?,?,?,?,?,?)";
 		try {
 			conn = DBConnection.getConnection();
 			ptmt = conn.prepareStatement(sql);
@@ -67,6 +70,8 @@ public class UserDAO {
 			ptmt.setString(4, user.getUser_pass());
 			ptmt.setInt(5,0);
 			ptmt.setInt(6,0);
+			ptmt.setInt(7,0);
+			ptmt.setInt(8,0);
 			ptmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -110,5 +115,42 @@ public class UserDAO {
 			DBConnection.closePreparedStatement(ps);
 		}
 	}
-	
+	public static Vector<User> getBXH() {
+		Vector<User> list = new Vector<>();
+		Connection conn = DBConnection.getConnection();
+		PreparedStatement ptmt = null;
+		ResultSet rs = null;
+		String sql="SELECT * FROM user ORDER BY score DESC";
+		try {
+			ptmt = conn.prepareStatement(sql);
+			rs = ptmt.executeQuery();
+			while(rs.next()) {
+				User user = new User();
+				user.setUser_login(rs.getString("user_login"));
+				user.setUser_name(rs.getString("user_name"));
+				user.setUser_pass(rs.getString("user_pass"));
+				user.setStatus(rs.getInt("status"));
+				user.setLose(rs.getInt("lose"));
+				user.setWin(rs.getInt("win"));
+				user.setDraw(rs.getInt("draw"));
+				user.setScore(rs.getInt("score"));
+				list.add(user);
+			}
+			return list;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			DBConnection.closeConnection(conn);
+			DBConnection.closePreparedStatement(ptmt);
+			DBConnection.closeResultSet(rs);
+		}
+		return null;
+	}
+	public static void main(String[] args) {
+		System.out.println(getBXH().size());
+		for (User user : getBXH()) {
+			System.out.println(user);
+		}
+	}
 }

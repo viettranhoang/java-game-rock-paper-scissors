@@ -49,18 +49,7 @@ public class CaroClient extends javax.swing.JFrame {
         host = ip;
         
         
-        class Listen extends Thread {
-
-            public Listen() {
-                start();
-            }
-
-            @Override
-            public void run() {
-                listenSocket(port1);
-            }
-        }
-        new Listen();
+        
         class ListenGame extends Thread {
 
             public ListenGame() {
@@ -86,10 +75,6 @@ public class CaroClient extends javax.swing.JFrame {
 
         jTextField1 = new javax.swing.JTextField();
         buttonGroup1 = new javax.swing.ButtonGroup();
-        typingTextField = new javax.swing.JTextField();
-        sendButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        chatEditorPane = new javax.swing.JEditorPane();
         jPanel1 = new javax.swing.JPanel();
         rbBua = new javax.swing.JRadioButton();
         rbKeo = new javax.swing.JRadioButton();
@@ -98,6 +83,7 @@ public class CaroClient extends javax.swing.JFrame {
         lbScorePlayer = new javax.swing.JLabel();
         lbScoreYou = new javax.swing.JLabel();
         lbTime = new javax.swing.JLabel();
+        lbWin = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         exitMenuItem = new javax.swing.JMenuItem();
@@ -107,24 +93,6 @@ public class CaroClient extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Caro");
-
-        typingTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                typingTextFieldActionPerformed(evt);
-            }
-        });
-
-        sendButton.setText("Gửi");
-        sendButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sendButtonActionPerformed(evt);
-            }
-        });
-
-        chatEditorPane.setEditable(false);
-        chatEditorPane.setBackground(new java.awt.Color(204, 255, 255));
-        chatEditorPane.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        jScrollPane1.setViewportView(chatEditorPane);
 
         buttonGroup1.add(rbBua);
         rbBua.setSelected(true);
@@ -154,23 +122,28 @@ public class CaroClient extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(rbBua)
-                        .addGap(48, 48, 48)
-                        .addComponent(rbKeo))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lbTime)
-                        .addComponent(btnSend)))
-                .addGap(42, 42, 42)
-                .addComponent(rbBao)
-                .addContainerGap(27, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbScoreYou)
                     .addComponent(lbScorePlayer))
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(rbBua)
+                                .addGap(48, 48, 48)
+                                .addComponent(rbKeo))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lbTime)
+                                .addComponent(btnSend)))
+                        .addGap(42, 42, 42)
+                        .addComponent(rbBao))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(104, 104, 104)
+                        .addComponent(lbWin)))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,7 +157,9 @@ public class CaroClient extends javax.swing.JFrame {
                     .addComponent(rbBao))
                 .addGap(51, 51, 51)
                 .addComponent(btnSend)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(lbWin)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
                 .addComponent(lbScoreYou)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbScorePlayer)
@@ -213,31 +188,16 @@ public class CaroClient extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(typingTextField)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(sendButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(sendButton)
-                            .addComponent(typingTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 5, Short.MAX_VALUE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -248,85 +208,43 @@ public class CaroClient extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
-    private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
-        String s = typingTextField.getText();
-        if (s.length() == 0) {
-            return;
-        }
-        try {
-            Vector d = new Vector();
-            d.add(s);
-            out.writeObject(d);
-        } catch (IOException ex) {
-            Logger.getLogger(CaroClient.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        chatEditorPane.setText(chatEditorPane.getText() + "me : " + s + "\n");//2 cho 
-        typingTextField.setText("");
-    }//GEN-LAST:event_sendButtonActionPerformed
-
-    private void typingTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typingTextFieldActionPerformed
-        sendButtonActionPerformed(null);
-    }//GEN-LAST:event_typingTextFieldActionPerformed
-
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         try {
             if(rbBua.isSelected()) {
                 outGame.write(0);
                 outGame.flush();
-                clientDanh = 0;
+                youDanh = 0;
             } else if(rbKeo.isSelected()) {
                 outGame.write(2);
                 outGame.flush();
-                clientDanh = 2;
+                youDanh = 2;
             } else {
                 outGame.write(1);
                 outGame.flush();
-                clientDanh = 1;
+                youDanh = 1;
             }
             
-            if (clientDanh != -1) pointCalculator(clientDanh, serverDanh);
+            if (youDanh != -1) pointCalculator(youDanh, playerDanh);
         } catch (IOException ex) {}
     }//GEN-LAST:event_btnSendActionPerformed
    
-    public void pointCalculator(int p1, int p2) {
-        if((p1 + 1) % 3 == p2) {
-            System.out.println(p2 + "thua");
-        } else if(p1 == p2) {
-            System.out.println("Hòa");
+    public void pointCalculator(int you, int player) {
+        if((you + 1) % 3 == player) {
+            playerScore += 1;
+            lbWin.setText("Bạn thua");
+        } else if(you == player) {
+            playerScore += 0.5;
+            yourScore += 0.5;
+            lbWin.setText("Hòa");
         } else {
-            System.out.println(p1 + "thắng");
+            yourScore += 1;
+            lbWin.setText("Bạn thắng");
         }
+        lbScoreYou.setText("You: " + yourScore);
+        lbScorePlayer.setText("Player: " + playerScore);
     }
     
-    public void listenSocket(Integer port1) {
-        //Create socket connection
-        try {
-            socket = new Socket(host, port1);
-            OutputStream o = socket.getOutputStream();
-            out = new ObjectOutputStream(o);
-            InputStream i = socket.getInputStream();
-            in = new ObjectInputStream(i);
-        } catch (UnknownHostException e) {
-            System.err.println("Server không tồn tại");
-        } catch (IOException e) {
-            System.err.println("Server không mở");
-        }
-        while (true) {
-            try {
-                Vector s = null;
-                try {
-                    s = (Vector) in.readObject();
-                } catch (ClassNotFoundException ex) {
-                    //Logger.getLogger(CaroServer.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                this.toFront();
-                chatEditorPane.setText(chatEditorPane.getText() + "you : " + s.get(0).toString() + "\n");//1 cho
-            } catch (IOException ex) {
-            }
-        }
-    }
-
-    public void listenSocketGame(Integer port2) {
+        public void listenSocketGame(Integer port2) {
         //Create socket connection
         try {
             socketGame = new Socket(host, port2);
@@ -343,8 +261,8 @@ public class CaroClient extends javax.swing.JFrame {
             try {
                 Point s = null;
                 try {
-                    serverDanh = inGame.read();
-                    System.out.println("server danh " + serverDanh);
+                    playerDanh = inGame.read();
+                    System.out.println("server danh " + playerDanh);
                     
                     s = (Point) inGame.readObject();
                     checked.add(s);
@@ -369,22 +287,19 @@ public class CaroClient extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSend;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JEditorPane chatEditorPane;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lbScorePlayer;
     private javax.swing.JLabel lbScoreYou;
     private javax.swing.JLabel lbTime;
+    private javax.swing.JLabel lbWin;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JRadioButton rbBao;
     private javax.swing.JRadioButton rbBua;
     private javax.swing.JRadioButton rbKeo;
-    private javax.swing.JButton sendButton;
-    private javax.swing.JTextField typingTextField;
     // End of variables declaration//GEN-END:variables
     private int X0 = 20;
     private int Y0 = 20;
@@ -403,11 +318,7 @@ public class CaroClient extends javax.swing.JFrame {
      * Vị trí lẻ lưu các điểm đã đánh của user 2
      */
     private Vector<Point> checked = new Vector<Point>();
-    PlayNow mySelf; //thanh nhap nhay hien thi den nguoi choi nao danh
-    PlayNow you; 
-    Socket socket = null;
-    ObjectInputStream in = null;
-    ObjectOutputStream out = null;
+
     Socket socketGame = null;
     ObjectInputStream inGame = null;
     ObjectOutputStream outGame = null;
@@ -418,8 +329,8 @@ public class CaroClient extends javax.swing.JFrame {
      */
     boolean startUser = true;//quân đen đi trước
     String host;
-     int clientDanh = -1;
-    int serverDanh = -1;
-    int clientScore = 0;
-    int serverScore = 0;
+     int youDanh = -1;
+    int playerDanh = -1;
+    float playerScore = 0;
+    float yourScore = 0;
 }

@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 import BEAN.Address;
 import BEAN.User;
@@ -27,15 +30,13 @@ public class ThreadSocket extends Thread{
 	Address add = new Address();
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		
+
         try {
         	System.out.println("------------" +port);
             //Tạo luồng nhận dữ liệu từ Client
             br=new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			//Tạo luồng gửi dữ liệu về Client
-            bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            
+            bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())); 
           //Tạo luồng nhận dữ liệu từ Client
             DataInputStream inFromClient = new DataInputStream(socket.getInputStream());
             //Tạo luồng gửi dữ liệu về Client
@@ -77,7 +78,7 @@ public class ThreadSocket extends Thread{
 	        	}
 	        	if(ss[0].equals("3")) // tao server
                 {
-                    System.out.println("co nhay vao 3");
+
                     int port1 = port +1;
                     add.port1.add(port);
                     add.port2.add(port1);
@@ -123,7 +124,8 @@ public class ThreadSocket extends Thread{
 //                    }
                  }
                 if(ss[0].equals("5"))
-                {
+                {	
+
                     int j = 0;
                     for(j =0; j < add.name.size(); j++)
                     {
@@ -135,6 +137,22 @@ public class ThreadSocket extends Thread{
                     add.ip.remove(j);
                     add.name.remove(j);                    
                 }
+                if(ss[0].equals("6")) {
+                	System.out.println("co chay vao 6");
+                }
+	        	if(ss[0].equals("8")) {
+	        		Vector<User> list = UserDAO.getBXH();
+	        		String bxh = "";
+	        		for (User user : list) {
+						bxh+= user; 
+					}
+	        		System.out.println("bxh ser : " + bxh);
+	        		outToClient.writeBytes(bxh + "\n");
+//	        		thử sout cái biến bxh ra r chạy thử xem. nếu ko thấy bên kia hiện ra bảng, mà biến bxh vẫn có thì xem lại
+//	        		cách truyền socket của ông thôi @@
+	        		//uhm cach truyen nay sida vai ra y
+	        		
+	        	}
 	        	
 	        }
 		} catch (IOException e) {

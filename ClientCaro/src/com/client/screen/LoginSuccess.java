@@ -56,13 +56,13 @@ public class LoginSuccess extends javax.swing.JFrame {
         comServer = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
         jButton_loadServer = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 3, 20)); // NOI18N
         jLabel1.setText("Đăng nhập thành công!!!");
 
-        createServer.setFont(new java.awt.Font("Tahoma", 3, 14)); // NOI18N
         createServer.setText("Tạo server");
         createServer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -70,7 +70,6 @@ public class LoginSuccess extends javax.swing.JFrame {
             }
         });
 
-        btExit.setFont(new java.awt.Font("Tahoma", 3, 14)); // NOI18N
         btExit.setText("Exit");
         btExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -78,10 +77,8 @@ public class LoginSuccess extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setText("Click để tạo server!!!");
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setText("Lựa chọn đối thủ!!!");
 
         comServer.addItemListener(new java.awt.event.ItemListener() {
@@ -95,14 +92,19 @@ public class LoginSuccess extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setText("Server:");
 
-        jButton_loadServer.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton_loadServer.setText("Load List server");
         jButton_loadServer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_loadServerActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Bảng xếp hạng");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -117,7 +119,7 @@ public class LoginSuccess extends javax.swing.JFrame {
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -131,12 +133,12 @@ public class LoginSuccess extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel3)
                                         .addGap(9, 9, 9))
-                                    .addComponent(jButton_loadServer, javax.swing.GroupLayout.Alignment.TRAILING))))))
-                .addContainerGap(32, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btExit)
-                .addGap(47, 47, 47))
+                                    .addComponent(jButton_loadServer, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btExit)))))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,8 +161,10 @@ public class LoginSuccess extends javax.swing.JFrame {
                             .addComponent(createServer)
                             .addComponent(jButton_loadServer))))
                 .addGap(18, 18, 18)
-                .addComponent(btExit)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btExit)
+                    .addComponent(jButton1))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         pack();
@@ -271,10 +275,24 @@ public class LoginSuccess extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btExitActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+         try {
+            //action xem bang xep hang
+           outToServer.writeBytes("8-bxh" + "\n");
+            String mess = inFromServer.readLine();
+            System.out.println("mess client  : " + mess);
+            Ranking bxh = new Ranking(mess);
+
+            //day la gui request
+        } catch (IOException ex) {}
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btExit;
     private javax.swing.JComboBox comServer;
     private javax.swing.JButton createServer;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton_loadServer;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
